@@ -3,12 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfect Split — Kickstarter Live Dashboard</title>
+<title>Perfect Split â Kickstarter Live Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
+  /* ââââââââââââââââââââââââââââââââââââââââââ
+     PERFECT SPLIT BRAND PALETTE
+     Primary yellow:  #FFD700 / #FFC107
+     Deep navy:       #1B2838 / #141E2B
+     Card navy:       #1F2D3D
+     Border navy:     #2A3A4E
+     Muted label:     #8E9AAD
+     Secondary:       #3D5A80 (blue-slate)
+     Negative:        #E17055
+     ââââââââââââââââââââââââââââââââââââââââââ */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #141E2B; color: #E8ECF1; min-height: 100vh; }
+
+  /* ââ Header ââ */
   .header { background: linear-gradient(135deg, #1B2838 0%, #141E2B 100%); border-bottom: 3px solid #FFD700; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
   .header h1 { font-size: 22px; font-weight: 800; color: #fff; }
   .header h1 span { color: #FFD700; }
@@ -17,8 +29,12 @@
   .refresh-btn { background: #FFD700; color: #1B2838; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; margin-top: 6px; transition: background 0.2s; }
   .refresh-btn:hover { background: #FFC107; }
   .countdown { font-size: 11px; color: #5A6A7A; margin-top: 4px; }
+
+  /* ââ Section headers ââ */
   .section-title { padding: 22px 32px 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #8E9AAD; }
   .section-title .accent { color: #FFD700; }
+
+  /* ââ KPI rows ââ */
   .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding: 0 32px 20px; }
   .kpi { background: #1F2D3D; border-radius: 12px; padding: 18px; border: 1px solid #2A3A4E; position: relative; overflow: hidden; }
   .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #FFD700; }
@@ -26,13 +42,19 @@
   .kpi .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #8E9AAD; margin-bottom: 6px; }
   .kpi .value { font-size: 24px; font-weight: 700; color: #fff; }
   .kpi .sub { font-size: 11px; color: #5A6A7A; margin-top: 3px; }
+
+  /* ââ Cards ââ */
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 32px 24px; }
   .card { background: #1F2D3D; border-radius: 12px; padding: 24px; border: 1px solid #2A3A4E; }
   .card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #8E9AAD; margin-bottom: 16px; }
   .full-card { padding: 0 32px 24px; }
+
+  /* ââ Chart ââ */
   .chart-section { padding: 0 32px 24px; }
   .chart-container { position: relative; height: 300px; }
   .chart-container-sm { position: relative; height: 220px; }
+
+  /* ââ Tables ââ */
   table { width: 100%; border-collapse: collapse; }
   th { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #8E9AAD; text-align: left; padding: 8px 10px; border-bottom: 1px solid #2A3A4E; white-space: nowrap; }
   td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #1B2838; }
@@ -41,24 +63,41 @@
   .text-center { text-align: center; }
   .pos { color: #FFD700; }
   .neg { color: #E17055; }
+
+  /* ââ Tier bars ââ */
   .tier-bar { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
   .tier-bar .bar-track { flex: 1; background: #2A3A4E; border-radius: 4px; height: 24px; overflow: hidden; }
   .tier-bar .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; color: #1B2838; min-width: 30px; }
   .tier-bar .tier-label { width: 200px; font-size: 13px; }
   .tier-bar .tier-count { width: 80px; text-align: right; font-size: 13px; font-weight: 600; }
+
+  /* ââ Badges ââ */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .badge-ks { background: rgba(255,215,0,0.15); color: #FFD700; }
   .badge-custom { background: rgba(61,90,128,0.25); color: #7BA3CC; }
   .source-tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 8px; background: rgba(255,215,0,0.1); color: #FFD700; }
+
   .loading { text-align: center; padding: 40px; color: #8E9AAD; font-size: 14px; }
   .timestamp { text-align: center; padding: 16px; font-size: 12px; color: #5A6A7A; }
-  @media (max-width: 1000px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } .grid-2 { grid-template-columns: 1fr; } }
-  @media (max-width: 700px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } .header { flex-direction: column; gap: 12px; } .header .meta { text-align: center; } td, th { padding: 6px 6px; font-size: 11px; } }
+
+  /* ââ Responsive ââ */
+  @media (max-width: 1000px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .header { flex-direction: column; gap: 12px; }
+    .header .meta { text-align: center; }
+    td, th { padding: 6px 6px; font-size: 11px; }
+  }
 </style>
 </head>
 <body>
+
+<!-- âââââââââââââââ HEADER âââââââââââââââ -->
 <div class="header">
-  <h1><span>PERFECT SPLIT</span> — Kickstarter Campaign Dashboard</h1>
+  <h1><span>PERFECT SPLIT</span> â Kickstarter Campaign Dashboard</h1>
   <div class="meta">
     <div class="live">LIVE</div>
     <div>Launched Mar 31, 2026 &middot; Ends May 1, 2026</div>
@@ -66,33 +105,400 @@
     <div class="countdown" id="countdown">Next refresh in 5:00</div>
   </div>
 </div>
+
+<!-- âââââââââââââââ YESTERDAY'S SNAPSHOT âââââââââââââââ -->
 <div class="section-title"><span class="accent">Yesterday's Snapshot</span> <span id="snapshot-date"></span></div>
 <div class="kpi-row" id="yesterday-kpis">
-  <div class="kpi"><div class="label">Revenue</div><div class="value" id="y-revenue">--</div><div class="sub" id="y-revenue-sub"></div></div>
-  <div class="kpi"><div class="label">Profit</div><div class="value" id="y-profit">--</div><div class="sub" id="y-profit-sub"></div></div>
-  <div class="kpi"><div class="label">Ad Spend</div><div class="value" id="y-adspend">--</div><div class="sub" id="y-adspend-sub"></div></div>
-  <div class="kpi"><div class="label">CPA</div><div class="value" id="y-cpa">--</div><div class="sub" id="y-cpa-sub"></div></div>
-  <div class="kpi"><div class="label">Backers Acquired</div><div class="value" id="y-backers">--</div><div class="sub" id="y-backers-sub"></div></div>
+  <div class="kpi">
+    <div class="label">Revenue</div>
+    <div class="value" id="y-revenue">--</div>
+    <div class="sub" id="y-revenue-sub"></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Profit</div>
+    <div class="value" id="y-profit">--</div>
+    <div class="sub" id="y-profit-sub"></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Ad Spend</div>
+    <div class="value" id="y-adspend">--</div>
+    <div class="sub" id="y-adspend-sub"></div>
+  </div>
+  <div class="kpi">
+    <div class="label">CPA</div>
+    <div class="value" id="y-cpa">--</div>
+    <div class="sub" id="y-cpa-sub"></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Backers Acquired</div>
+    <div class="value" id="y-backers">--</div>
+    <div class="sub" id="y-backers-sub"></div>
+  </div>
 </div>
+
+<!-- âââââââââââââââ CAMPAIGN TOTALS âââââââââââââââ -->
 <div class="section-title"><span class="accent">Campaign Total</span></div>
 <div class="kpi-row" id="campaign-kpis">
-  <div class="kpi campaign"><div class="label">Revenue</div><div class="value" id="c-revenue">--</div></div>
-  <div class="kpi campaign"><div class="label">Profit</div><div class="value" id="c-profit">--</div></div>
-  <div class="kpi campaign"><div class="label">Ad Spend</div><div class="value" id="c-adspend">--</div></div>
-  <div class="kpi campaign"><div class="label">CPA</div><div class="value" id="c-cpa">--</div></div>
-  <div class="kpi campaign"><div class="label">Backers Acquired</div><div class="value" id="c-backers">--</div></div>
+  <div class="kpi campaign">
+    <div class="label">Revenue</div>
+    <div class="value" id="c-revenue">--</div>
+  </div>
+  <div class="kpi campaign">
+    <div class="label">Profit</div>
+    <div class="value" id="c-profit">--</div>
+  </div>
+  <div class="kpi campaign">
+    <div class="label">Ad Spend</div>
+    <div class="value" id="c-adspend">--</div>
+  </div>
+  <div class="kpi campaign">
+    <div class="label">CPA</div>
+    <div class="value" id="c-cpa">--</div>
+  </div>
+  <div class="kpi campaign">
+    <div class="label">Backers Acquired</div>
+    <div class="value" id="c-backers">--</div>
+  </div>
 </div>
-<div class="chart-section"><div class="card"><h3>Revenue vs. Profit <span class="source-tag">Google Sheets &middot; DAILY</span></h3><div class="chart-container"><canvas id="revProfitChart"></canvas></div></div></div>
-<div class="full-card"><div class="card"><h3>Daily Breakdown <span class="source-tag">Google Sheets &middot; DAILY</span></h3><div style="overflow-x: auto;"><table><thead><tr><th>Day</th><th>Date</th><th class="text-right">Revenue</th><th class="text-right">Profit</th><th class="text-right">Ad Spend</th><th class="text-right">CPA</th><th class="text-right">ROAS</th><th class="text-right">Margin</th><th class="text-center">Total Units</th></tr></thead><tbody id="daily-tbody"><tr><td colspan="9" class="loading">Loading data from Google Sheets...</td></tr></tbody></table></div></div></div>
+
+<!-- âââââââââââââââ REVENUE VS PROFIT CHART âââââââââââââââ -->
+<div class="chart-section">
+  <div class="card">
+    <h3>Revenue vs. Profit <span class="source-tag">Google Sheets &middot; DAILY</span></h3>
+    <div class="chart-container">
+      <canvas id="revProfitChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- âââââââââââââââ DAILY BREAKDOWN TABLE âââââââââââââââ -->
+<div class="full-card">
+  <div class="card">
+    <h3>Daily Breakdown <span class="source-tag">Google Sheets &middot; DAILY</span></h3>
+    <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th class="text-right">Revenue</th>
+          <th class="text-right">Profit</th>
+          <th class="text-right">Ad Spend</th>
+          <th class="text-right">CPA</th>
+          <th class="text-right">ROAS</th>
+          <th class="text-right">Margin</th>
+          <th class="text-center">Total Units</th>
+        </tr>
+      </thead>
+      <tbody id="daily-tbody">
+        <tr><td colspan="9" class="loading">Loading data from Google Sheets...</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- âââââââââââââââ KICKSTARTER SECTIONS (static) âââââââââââââââ -->
 <div class="grid-2">
-  <div class="card"><h3>Reward Tiers — Backer Distribution <span class="source-tag">Kickstarter</span></h3><div class="tier-bar"><div class="tier-label">Base Game ($30)</div><div class="bar-track"><div class="bar-fill" style="width: 22.2%; background: #FFD700;">12</div></div><div class="tier-count">$360</div></div><div class="tier-bar"><div class="tier-label">Base + NSFW Expansion ($45)</div><div class="bar-track"><div class="bar-fill" style="width: 63%; background: #FFC107;">34</div></div><div class="tier-count">$1,530</div></div><div class="tier-bar"><div class="tier-label">Two Base Games ($55)</div><div class="bar-track"><div class="bar-fill" style="width: 5.5%; background: #3D5A80; color: #fff;">3</div></div><div class="tier-count">$165</div></div><div class="tier-bar"><div class="tier-label">Two Base + NSFW ($75)</div><div class="bar-track"><div class="bar-fill" style="width: 9.3%; background: #3D5A80; color: #fff;">5</div></div><div class="tier-count">$375</div></div><div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #2A3A4E; display: flex; justify-content: space-between;"><span style="color: #8E9AAD; font-size: 12px;">No-reward backers: ~8</span><span style="color: #8E9AAD; font-size: 12px;">Total: 62 backers &middot; $2,903 pledged</span></div></div>
-  <div class="card"><h3>Pledge Source Breakdown <span class="source-tag">Kickstarter</span></h3><div class="chart-container-sm"><canvas id="pledgeSourceChart"></canvas></div><div style="margin-top: 12px; display: flex; gap: 16px; justify-content: center; font-size: 12px;"><span><span style="color: #FFD700;">&#9679;</span> Kickstarter: $1,628 (56%)</span><span><span style="color: #3D5A80;">&#9679;</span> Custom Referrers: $1,275 (44%)</span></div></div>
+  <div class="card">
+    <h3>Reward Tiers â Backer Distribution <span class="source-tag">Kickstarter</span></h3>
+    <div class="tier-bar">
+      <div class="tier-label">Base Game ($30)</div>
+      <div class="bar-track"><div class="bar-fill" style="width: 22.2%; background: #FFD700;">12</div></div>
+      <div class="tier-count">$360</div>
+    </div>
+    <div class="tier-bar">
+      <div class="tier-label">Base + NSFW Expansion ($45)</div>
+      <div class="bar-track"><div class="bar-fill" style="width: 63%; background: #FFC107;">34</div></div>
+      <div class="tier-count">$1,530</div>
+    </div>
+    <div class="tier-bar">
+      <div class="tier-label">Two Base Games ($55)</div>
+      <div class="bar-track"><div class="bar-fill" style="width: 5.5%; background: #3D5A80; color: #fff;">3</div></div>
+      <div class="tier-count">$165</div>
+    </div>
+    <div class="tier-bar">
+      <div class="tier-label">Two Base + NSFW ($75)</div>
+      <div class="bar-track"><div class="bar-fill" style="width: 9.3%; background: #3D5A80; color: #fff;">5</div></div>
+      <div class="tier-count">$375</div>
+    </div>
+    <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #2A3A4E; display: flex; justify-content: space-between;">
+      <span style="color: #8E9AAD; font-size: 12px;">No-reward backers: ~8</span>
+      <span style="color: #8E9AAD; font-size: 12px;">Total: 62 backers &middot; $2,903 pledged</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Pledge Source Breakdown <span class="source-tag">Kickstarter</span></h3>
+    <div class="chart-container-sm">
+      <canvas id="pledgeSourceChart"></canvas>
+    </div>
+    <div style="margin-top: 12px; display: flex; gap: 16px; justify-content: center; font-size: 12px;">
+      <span><span style="color: #FFD700;">&#9679;</span> Kickstarter: $1,628 (56%)</span>
+      <span><span style="color: #3D5A80;">&#9679;</span> Custom Referrers: $1,275 (44%)</span>
+    </div>
+  </div>
 </div>
-<div class="full-card"><div class="card"><h3>Referrer Performance <span class="source-tag">Kickstarter</span></h3><table><thead><tr><th>Referrer</th><th>Type</th><th class="text-center"># Pledges</th><th class="text-center">% of Pledged</th><th class="text-right">Amount</th></tr></thead><tbody><tr><td>Email - New Project From Creator You've Backed</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">20</td><td class="text-center">31%</td><td class="text-right">$910</td></tr><tr><td>Ransom Notes KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">13</td><td class="text-center">22%</td><td class="text-right">$655</td></tr><tr><td>Abducktion KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">10</td><td class="text-center">15%</td><td class="text-right">$455</td></tr><tr><td>Discovery Landing Page</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">7%</td><td class="text-right">$228</td></tr><tr><td>Email - Project Launched - Followers</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">6</td><td class="text-center">7%</td><td class="text-right">$210</td></tr><tr><td>Launch Email</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr><tr><td>App - Search</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr><tr><td>Push Notification</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr><tr><td>Skyscratchers KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">2</td><td class="text-center">2%</td><td class="text-right">$75</td></tr><tr><td>Android Deep Link</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">1%</td><td class="text-right">$45</td></tr><tr><td>Email - Project Launched - Friends</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">1%</td><td class="text-right">$30</td></tr><tr><td>KS Discovery - No Referral Code</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">0%</td><td class="text-right">$25</td></tr></tbody></table></div></div>
-<div class="timestamp" id="timestamp">Data sources: Google Sheets (DAILY tab) + Kickstarter Creator Dashboard</div>
+
+<!-- Referrer Table -->
+<div class="full-card">
+  <div class="card">
+    <h3>Referrer Performance <span class="source-tag">Kickstarter</span></h3>
+    <table>
+      <thead>
+        <tr><th>Referrer</th><th>Type</th><th class="text-center"># Pledges</th><th class="text-center">% of Pledged</th><th class="text-right">Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Email - New Project From Creator You've Backed</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">20</td><td class="text-center">31%</td><td class="text-right">$910</td></tr>
+        <tr><td>Ransom Notes KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">13</td><td class="text-center">22%</td><td class="text-right">$655</td></tr>
+        <tr><td>Abducktion KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">10</td><td class="text-center">15%</td><td class="text-right">$455</td></tr>
+        <tr><td>Discovery Landing Page</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">7%</td><td class="text-right">$228</td></tr>
+        <tr><td>Email - Project Launched - Followers</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">6</td><td class="text-center">7%</td><td class="text-right">$210</td></tr>
+        <tr><td>Launch Email</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr>
+        <tr><td>App - Search</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr>
+        <tr><td>Push Notification</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">2</td><td class="text-center">3%</td><td class="text-right">$90</td></tr>
+        <tr><td>Skyscratchers KS Crosspost</td><td><span class="badge badge-custom">Custom</span></td><td class="text-center">2</td><td class="text-center">2%</td><td class="text-right">$75</td></tr>
+        <tr><td>Android Deep Link</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">1%</td><td class="text-right">$45</td></tr>
+        <tr><td>Email - Project Launched - Friends</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">1%</td><td class="text-right">$30</td></tr>
+        <tr><td>KS Discovery - No Referral Code</td><td><span class="badge badge-ks">Kickstarter</span></td><td class="text-center">1</td><td class="text-center">0%</td><td class="text-right">$25</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="timestamp" id="timestamp">
+  Data sources: Google Sheets (DAILY tab) + Kickstarter Creator Dashboard
+</div>
+
 <script>
-const SHEET_ID='1ntVNuVXkK5oYnp5hAd4YACU0ApJKfOwdGb_AO69QIv8';const DAILY_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=DAILY`;const AUTO_REFRESH_MIN=5;const TOTALS_ROW_INDEX=34;const COL={DOW:0,DATE:1,REV:2,CPA:3,ROAS:4,PROFIT:5,MARGIN:6,FUNDING:7,ADSPEND:8,TOTAL_UNITS:18};const BRAND={yellow:'#FFD700',yellowLight:'#FFC107',navy:'#1B2838',navyCard:'#1F2D3D',navyBorder:'#2A3A4E',blue:'#3D5A80',blueLight:'#7BA3CC',muted:'#8E9AAD',gridLine:'#1B2838',red:'#E17055'};let allRows=[],dailyData=[],totalsRow=null;let revProfitChart=null,refreshTimer=null,countdownTimer=null,nextRefreshAt=null;function parseMoney(v){if(v==null||v==='')return 0;return parseFloat(String(v).replace(/[$,%]/g,''))||0;}function parseMargin(v){if(!v)return 0;const s=String(v).trim();if(s.endsWith('%'))return parseFloat(s)/100;const n=parseFloat(s.replace(/[$,]/g,''));return n>1?n/100:n;}function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}function fmtInt(n){return '$'+Math.round(n).toLocaleString('en-US');}function pct(n){return(n*100).toFixed(1)+'%';}function loadDaily(){return new Promise((resolve,reject)=>{Papa.parse(DAILY_URL,{download:true,header:false,complete(results){allRows=results.data;dailyData=[];totalsRow=null;for(let i=2;i<allRows.length;i++){const r=allRows[i];if(String(r[COL.DOW]).trim().toUpperCase()==='TOTAL'){totalsRow=r;break;}if(!r[COL.DATE])continue;const rev=parseMoney(r[COL.REV]),profit=parseMoney(r[COL.PROFIT]);const adSpend=parseMoney(r[COL.ADSPEND]),cpa=parseMoney(r[COL.CPA]);const roas=parseMoney(r[COL.ROAS]),margin=parseMargin(r[COL.MARGIN]);const units=parseInt(r[COL.TOTAL_UNITS])||0;if(rev||adSpend||profit||units){dailyData.push({dow:r[COL.DOW]||'',date:r[COL.DATE]||'',revenue:rev,profit,adSpend,cpa,roas,margin,units});}}if(!totalsRow&&allRows.length>TOTALS_ROW_INDEX)totalsRow=allRows[TOTALS_ROW_INDEX];resolve();},error:reject});});}function findYesterdayRow(){const today=new Date();today.setHours(0,0,0,0);for(let i=dailyData.length-1;i>=0;i--){const parts=dailyData[i].date.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);if(!parts)con
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   CONFIG
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+const SHEET_ID  = '1ntVNuVXkK5oYnp5hAd4YACU0ApJKfOwdGb_AO69QIv8';
+const DAILY_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=DAILY`;
+const AUTO_REFRESH_MIN = 5;
+const TOTALS_ROW_INDEX = 34;
+
+/* COLUMN MAP (0-indexed CSV columns) */
+const COL = { DOW:0, DATE:1, REV:2, CPA:3, ROAS:4, PROFIT:5, MARGIN:6, FUNDING:7, ADSPEND:8, TOTAL_UNITS:18 };
+
+/* Brand colors for charts */
+const BRAND = {
+  yellow: '#FFD700', yellowLight: '#FFC107',
+  navy: '#1B2838', navyCard: '#1F2D3D', navyBorder: '#2A3A4E',
+  blue: '#3D5A80', blueLight: '#7BA3CC',
+  muted: '#8E9AAD', gridLine: '#1B2838', red: '#E17055'
+};
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   STATE
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+let allRows = [], dailyData = [], totalsRow = null;
+let revProfitChart = null, refreshTimer = null, countdownTimer = null, nextRefreshAt = null;
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   HELPERS
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+function parseMoney(v) {
+  if (v == null || v === '') return 0;
+  return parseFloat(String(v).replace(/[$,%]/g, '')) || 0;
+}
+function parseMargin(v) {
+  if (!v) return 0;
+  const s = String(v).trim();
+  if (s.endsWith('%')) return parseFloat(s) / 100;
+  const n = parseFloat(s.replace(/[$,]/g, ''));
+  return n > 1 ? n / 100 : n;
+}
+function fmt(n)    { return '$' + n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+function fmtInt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+function pct(n)    { return (n * 100).toFixed(1) + '%'; }
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   LOAD DATA
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+function loadDaily() {
+  return new Promise((resolve, reject) => {
+    Papa.parse(DAILY_URL, {
+      download: true, header: false,
+      complete(results) {
+        allRows = results.data;
+        dailyData = [];
+        totalsRow = null;
+
+        for (let i = 2; i < allRows.length; i++) {
+          const r = allRows[i];
+          if (String(r[COL.DOW]).trim().toUpperCase() === 'TOTAL') { totalsRow = r; break; }
+          if (!r[COL.DATE]) continue;
+
+          const rev = parseMoney(r[COL.REV]), profit = parseMoney(r[COL.PROFIT]);
+          const adSpend = parseMoney(r[COL.ADSPEND]), cpa = parseMoney(r[COL.CPA]);
+          const roas = parseMoney(r[COL.ROAS]), margin = parseMargin(r[COL.MARGIN]);
+          const units = parseInt(r[COL.TOTAL_UNITS]) || 0;
+
+          if (rev || adSpend || profit || units) {
+            dailyData.push({ dow: r[COL.DOW]||'', date: r[COL.DATE]||'', revenue: rev, profit, adSpend, cpa, roas, margin, units });
+          }
+        }
+
+        if (!totalsRow && allRows.length > TOTALS_ROW_INDEX) totalsRow = allRows[TOTALS_ROW_INDEX];
+        resolve();
+      },
+      error: reject
+    });
+  });
+}
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   FIND YESTERDAY â most recent row with date < today
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+function findYesterdayRow() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = dailyData.length - 1; i >= 0; i--) {
+    const parts = dailyData[i].date.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (!parts) continue;
+    let yr = parseInt(parts[3]); if (yr < 100) yr += 2000;
+    const rd = new Date(yr, parseInt(parts[1])-1, parseInt(parts[2])); rd.setHours(0,0,0,0);
+    if (rd < today) return dailyData[i];
+  }
+  return dailyData.length > 0 ? dailyData[dailyData.length - 1] : null;
+}
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   RENDERERS
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+function renderYesterday() {
+  const y = findYesterdayRow();
+  if (!y) return;
+  document.getElementById('snapshot-date').textContent = `â ${y.date}`;
+  document.getElementById('y-revenue').textContent = fmtInt(y.revenue);
+  document.getElementById('y-profit').textContent  = fmtInt(y.profit);
+  document.getElementById('y-adspend').textContent = fmtInt(y.adSpend);
+  document.getElementById('y-cpa').textContent     = y.cpa > 0 ? fmt(y.cpa) : '--';
+  document.getElementById('y-backers').textContent = y.units || '--';
+  document.getElementById('y-profit').className    = 'value ' + (y.profit >= 0 ? 'pos' : 'neg');
+}
+
+function renderCampaignTotals() {
+  if (!totalsRow) return;
+  const r = totalsRow;
+  document.getElementById('c-revenue').textContent = fmtInt(parseMoney(r[COL.REV]));
+  document.getElementById('c-profit').textContent  = fmtInt(parseMoney(r[COL.PROFIT]));
+  document.getElementById('c-adspend').textContent = fmtInt(parseMoney(r[COL.ADSPEND]));
+  document.getElementById('c-cpa').textContent     = parseMoney(r[COL.CPA]) > 0 ? fmt(parseMoney(r[COL.CPA])) : '--';
+  document.getElementById('c-backers').textContent = parseInt(r[COL.TOTAL_UNITS]) || '--';
+}
+
+function renderRevProfitChart() {
+  const labels = dailyData.map((d, i) => d.date || `Day ${i+1}`);
+  const revenues = dailyData.map(d => d.revenue);
+  const profits  = dailyData.map(d => d.profit);
+
+  if (revProfitChart) revProfitChart.destroy();
+
+  revProfitChart = new Chart(document.getElementById('revProfitChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Revenue', data: revenues, backgroundColor: BRAND.yellow, borderRadius: 4 },
+        { label: 'Profit',  data: profits,  backgroundColor: BRAND.blue,   borderRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: BRAND.muted, font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#5A6A7A', font: { size: 10 } }, grid: { color: BRAND.navyBorder } },
+        y: { ticks: { color: '#5A6A7A', callback: v => '$' + v.toLocaleString() }, grid: { color: BRAND.navyBorder } }
+      }
+    }
+  });
+}
+
+function renderDailyTable() {
+  const tbody = document.getElementById('daily-tbody');
+  if (dailyData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#8E9AAD; padding:20px;">No daily data yet. Add data to the DAILY tab.</td></tr>';
+    return;
+  }
+  let html = '';
+  dailyData.forEach((d, i) => {
+    const mClass = d.margin >= 0.5 ? 'pos' : d.margin > 0 && d.margin < 0.15 ? 'neg' : '';
+    html += `<tr>
+      <td>Day ${i+1}</td><td>${d.date}</td>
+      <td class="text-right">${fmt(d.revenue)}</td>
+      <td class="text-right ${d.profit >= 0 ? 'pos' : 'neg'}">${fmt(d.profit)}</td>
+      <td class="text-right">${fmt(d.adSpend)}</td>
+      <td class="text-right">${d.cpa > 0 ? fmt(d.cpa) : '--'}</td>
+      <td class="text-right">${d.roas > 0 ? fmt(d.roas) : '--'}</td>
+      <td class="text-right ${mClass}">${d.margin > 0 ? pct(d.margin) : '--'}</td>
+      <td class="text-center" style="font-weight:600;">${d.units || '--'}</td>
+    </tr>`;
+  });
+  if (totalsRow) {
+    const tr = totalsRow;
+    html += `<tr style="background: rgba(255,215,0,0.07); font-weight: 700;">
+      <td colspan="2">CAMPAIGN TOTAL</td>
+      <td class="text-right">${fmtInt(parseMoney(tr[COL.REV]))}</td>
+      <td class="text-right pos">${fmtInt(parseMoney(tr[COL.PROFIT]))}</td>
+      <td class="text-right">${fmtInt(parseMoney(tr[COL.ADSPEND]))}</td>
+      <td class="text-right">${parseMoney(tr[COL.CPA]) > 0 ? fmt(parseMoney(tr[COL.CPA])) : '--'}</td>
+      <td class="text-right">${parseMoney(tr[COL.ROAS]) > 0 ? fmt(parseMoney(tr[COL.ROAS])) : '--'}</td>
+      <td class="text-right">${parseMargin(tr[COL.MARGIN]) > 0 ? pct(parseMargin(tr[COL.MARGIN])) : '--'}</td>
+      <td class="text-center">${parseInt(tr[COL.TOTAL_UNITS]) || '--'}</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+}
+
+function renderPledgeSource() {
+  new Chart(document.getElementById('pledgeSourceChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['KS Auto Email','RN Crosspost','Abducktion XP','Discovery','Follower Email','Other KS','Other Custom'],
+      datasets: [{ data: [910,655,455,228,210,280,165], backgroundColor: [BRAND.yellow, BRAND.yellowLight,'#E5C100', BRAND.blue, BRAND.blueLight,'#4A6FA5', BRAND.red], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { display: false } } }
+  });
+}
+
+/* ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+   MAIN + AUTO-REFRESH
+   ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+async function loadAllData() {
+  document.getElementById('timestamp').textContent = 'Loading data...';
+  try {
+    await loadDaily();
+    renderYesterday();
+    renderCampaignTotals();
+    renderRevProfitChart();
+    renderDailyTable();
+    document.getElementById('timestamp').innerHTML =
+      `Last refreshed: ${new Date().toLocaleString()} &middot; Source: <strong>Google Sheets</strong> (DAILY) + <strong>Kickstarter</strong> (tiers, referrers)`;
+    startCountdown();
+  } catch (e) {
+    console.error('Dashboard load error:', e);
+    document.getElementById('timestamp').innerHTML =
+      'Error loading data. Ensure the sheet is shared as <strong>"Anyone with the link can view"</strong>.';
+  }
+}
+
+function startCountdown() {
+  if (refreshTimer) clearTimeout(refreshTimer);
+  if (countdownTimer) clearInterval(countdownTimer);
+  nextRefreshAt = Date.now() + AUTO_REFRESH_MIN * 60 * 1000;
+  countdownTimer = setInterval(() => {
+    const rem = Math.max(0, nextRefreshAt - Date.now());
+    document.getElementById('countdown').textContent =
+      `Next refresh in ${Math.floor(rem/60000)}:${String(Math.floor((rem%60000)/1000)).padStart(2,'0')}`;
+  }, 1000);
+  refreshTimer = setTimeout(loadAllData, AUTO_REFRESH_MIN * 60 * 1000);
+}
+
+/* Boot */
+renderPledgeSource();
+loadAllData();
 </script>
 </body>
 </html>
-
