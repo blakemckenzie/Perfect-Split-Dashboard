@@ -284,7 +284,7 @@
 /* ════════════════════════════════════════════════════════════
    CONFIG
    ════════════════════════════════════════════════════════════ */
-const SHEET_ID  = '1ntVNuVXkK5oYnp5hAd4YACU0ApJKfOwdGb_AO69QIv8';
+const SHEET_ID  = '1ntVNuVXkK5oYnp5hAd4YACU0ABKfOwdGb_AO69QIv8';
 const DAILY_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=DAILY`;
 const AUTO_REFRESH_MIN = 5;
 const TOTALS_ROW_INDEX = 34;
@@ -454,7 +454,7 @@ function renderDailyTable() {
     const tr = totalsRow;
     html += `<tr style="background: rgba(255,215,0,0.07); font-weight: 700;">
       <td colspan="2">CAMPAIGN TOTAL</td>
-      <td class="text-right">${fmtInt(parseMoneyttr[COL.REV]))}</td>
+      <td class="text-right">${fmtInt(parseMoney(tr[COL.REV]))}</td>
       <td class="text-right pos">${fmtInt(parseMoney(tr[COL.PROFIT]))}</td>
       <td class="text-right">${fmtInt(parseMoney(tr[COL.ADSPEND]))}</td>
       <td class="text-right">${parseMoney(tr[COL.CPA]) > 0 ? fmt(parseMoney(tr[COL.CPA])) : '--'}</td>
