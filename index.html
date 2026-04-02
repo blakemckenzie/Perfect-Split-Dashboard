@@ -232,116 +232,137 @@ const AUTO_REFRESH_MIN = 5;
 const TOTALS_ROW_INDEX = 33;
 
 /* COLUMN MAP (0-indexed CSV columns) */
-const COL = { DOW:0, DATE:1, REV:2, CPA����T΍�ђU�KPT��S����S�S�΍�Q�S���S�S�UΌNSՎ��N�ʈ��[���ܜ��܈�\��
-��ۜ���S�HY[�Έ	�ё�
-�	�Y[��Y��	�ё��L
-����]�N�	��P���	��]�P�\��	��Q���	��]�P�ܙ\��	�̐L�MI���YN�	���
-PN	��YSY��	��АL�����]]Y�	��NPPQ	�ܚY[�N�	��P���	��Y�	��LM�
-MIN�ʈ8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��UB�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d
-�][����H�KZ[Q]HH�K�[ԛ��H�[]�]��ٚ]�\�H�[�[�[���\�H�[�Y��\�[Y\�H�[��[��ە[Y\�H�[�^�Y��\�]H�[�ʈ8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d�ST�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d
-��[��[ۈ\��S[ۙ^J�HY�
-�OH�[�OOH	��H�]\���]\��\��Q��]
-��[���K��\X�J��	WK��	��JHB��[��[ۈ\��SX\��[��HY�
-]�H�]\���ۜ��H��[���K��[J
-NY�
-˙[���]
-	�I�JH�]\��\��Q��]
-�H�L�ۜ��H\��Q��]
-˜�\X�J��K��	��JN�]\����H���L��B��[��[ۈ�]
-�H��]\��	�	�
-������[T��[��	�[�UT���Z[�[][Q��X�[ۑY�]Ό�X^[][Q��X�[ۑY�]Ό�JN�B��[��[ۈ�][�
-�H��]\��	�	�
-�X]���[�
-�K����[T��[��	�[�UT��N�B��[��[ۈ�
-�H��]\��
-�
-�L
-K�њ^Y
-JH
-�	�I��B��ʈ8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��QUB�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d
-��[��[ۈ�YZ[J
-H�]\���]���Z\�J
-�\���K�Z�X�
-HO�\K�\��JRSW�T��ۛ�Y��YKXY\���[�K���\]J�\�[�H[����H�\�[˙]NZ[Q]HH�N�[ԛ��H�[��܈
-]HHN�H[���˛[���J��H�ۜ��H[�����WNY�
-��[���������JK��[J
-K��\\��\�J
-HOOH	��S	�H��[ԛ��H����XZ��B�Y�
-\�����UWJH�۝[�YN��ۜ��]�H\��S[ۙ^J������U�JK�ٚ]H\��S[ۙ^J������ђUJN�ۜ�Y�[�H\��S[ۙ^J�����Q�S�JK�HH\��S[ۙ^J������WJN�ۜ���\�H\��S[ۙ^J�������T�JKX\��[�H\��SX\��[������PT��S�JN�ۜ�[�]�H\��R[�
-������S�S�U�JH�ۜ�[݈H\��S[ۙ^J�����S՗JN�Y�
-�]�Y�[��ٚ][�]�HZ[Q]K�\�
-��Έ�������_	��]N������UW_	���]�[�YN��]��ٚ]Y�[��K��\�X\��[�[�]�[݈JNB�B��Y�
-]�[ԛ��	��[���˛[����S�ԓ���S�V
-H�[ԛ��H[������S�ԓ���S�VN�\���J
-NK�\��܎��Z�X��JNJNB��ʈ8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��S�QT�T�VH8�%[���X�[�����]]H�^B�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d
-��[��[ۈ�[�Y\�\�^T���
-H�ۜ��^HH�]�]J
-N��^K��]�\��
-N�܈
-]HHZ[Q]K�[��HN�H�H�KKJH�ۜ�\��HZ[Q]V�WK�]K�X]�
-��K�JW��K�JW�̋
-JK�NY�
-\\��H�۝[�YN]\�H\��R[�
-\����JN�Y�
-\�L
-H\�
-�H��ۜ��H�]�]J\�\��R[�
-\���WJKLK\��R[�
-\��̗JJN����]�\��
-NY�
-��^JH�]\��Z[Q]V�WNB��]\��Z[Q]K�[����Z[Q]V�Z[Q]K�[��HWH��[B��ʈ8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d��S�T�T�8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d8�d
-��[��[ۈ�[�\�Y\�\�^J
-H�ۜ�HH�[�Y\�\�^T���
-NY�
-^JH�]\����[Y[���][[Y[��RY
-	�ۘ\��Y]I�K�^�۝[�H8�%	�K�]_X��[Y[���][[Y[��RY
-	�K\�]�[�YI�K�^�۝[�H�][�
-K��]�[�YJN��[Y[���][[Y[��RY
-	�K\�ٚ]	�K�^�۝[�H�][�
-K��ٚ]
-N��[Y[���][[Y[��RY
-	�KXY�[�	�K�^�۝[�H�][�
-K�Y�[�
-N��[Y[���][[Y[��RY
-	�KX�I�K�^�۝[�HK��H���]
-K��JH�	�KI���[Y[���][[Y[��RY
-	�KX�X��\���K�^�۝[�HK�[�]�	�KI���[Y[���][[Y[��RY
-	�KX[݉�K�^�۝[�HK�[݈���]
-K�[݊H�	�KI���[Y[���][[Y[��RY
-	�K\�ٚ]	�K��\�Ә[YHH	ݘ[YH	�
-�
-K��ٚ]�H�	�����	ۙY��NB���[��[ۈ�[�\��[\ZYە�[�
-HY�
-]�[ԛ��H�]\���ۜ��H�[ԛ����[Y[���][[Y[��RY
-	��\�]�[�YI�K�^�۝[�H�][�
-\��S[ۙ^J������U�JJN��[Y[���][[Y[��RY
-	��\�ٚ]	�K�^�۝[�H�][�
-\��S[ۙ^J������ђUJJN��[Y[���][[Y[��RY
-	��XY�[�	�K�^�۝[�H�][�
-\��S[ۙ^J�����Q�S�JJN��[Y[���][[Y[��RY
-	��X�I�K�^�۝[�H\��S[ۙ^J������WJH���]
-\��S[ۙ^J������WJJH�	�KI���[Y[���][[Y[��RY
-	��X�X��\���K�^�۝[�H\��R[�
-������S�S�U�JH	�KI���[Y[���][[Y[��RY
-	��X[݉�K�^�۝[�H\��S[ۙ^J�����S՗JH���]
-\��S[ۙ^J�����S՗JJH�	�KI�B���[��[ۈ�[�\��]��ٚ]�\�
+const COL = { DOW:0, DATE:1, REV:2, CPA:3, ROAS:4, PROFIT:5, MARGIN:6, FUNDING:7, ADSPEND:8, TOTAL_UNITS:18, AOV:24 };
 
-H�ۜ�X�[�HZ[Q]K�X\
+/* Brand colors for charts */
+const BRAND = {
+  yellow: '#FFD700', yellowLight: '#FFC107',
+  navy: '#1B2838', navyCard: '#1F2D3D', navyBorder: '#2A3A4E',
+  blue: '#3D5A80', blueLight: '#7BA3CC',
+  muted: '#8E9AAD', gridLine: '#1B2838', red: '#E17055'
+};
 
-JHO��]H^H	�J�_X
-N�ۜ��]�[�Y\�HZ[Q]K�X\
-O���]�[�YJN�ۜ��ٚ]�HZ[Q]K�X\
-O���ٚ]
-N�Y�
-�]��ٚ]�\�
-H�]��ٚ]�\��\���J
-N��]��ٚ]�\�H�]��\�
-��[Y[���][[Y[��RY
-	ܙ]��ٚ]�\�	�K��]�۝^
-	̙	�K\N�	�[�I��]N�X�[��]\�]Έ�X�[�	ԙ]�[�YI�]N��]�[�Y\��ܙ\���܎���S��Y[���X��ܛ�[���܎�	ܙؘJ�MK�MK�L
-I��[��YK[��[ێ���K�[��Y]\Έ��[��X��ܛ�[���܎���S��Y[���ܙ\��Y��K��X�[�	��ٚ]	�]N��ٚ]��ܙ\���܎���S���YK�X��ܛ�[���܎�	ܙؘJ
-�KLL��L
-I��[��YK[��[ێ���K�[��Y]\Έ��[��X��ܛ�[���܎���S���YK�ܙ\��Y��K�B�K��[ۜΈ�\�ۜ�]�N��YKXZ[�Z[�\�X��][Έ�[�K�Y�[�Έ�Y�[���X�[Έ���܎���S��]]Y�۝���^�N�LHHHHA,
+/* ════════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════════ */
+let allRows = [], dailyData = [], totalsRow = null;
+let revProfitChart = null, fundingChart = null, refreshTimer = null, countdownTimer = null, nextRefreshAt = null;
+
+/* ════════════════════════════════════════════════════════════
+   HELPERS
+   ════════════════════════════════════════════════════════════ */
+function parseMoney(v) {
+  if (v == null || v === '') return 0;
+  return parseFloat(String(v).replace(/[$,%]/g, '')) || 0;
+}
+function parseMargin(v) {
+  if (!v) return 0;
+  const s = String(v).trim();
+  if (s.endsWith('%')) return parseFloat(s) / 100;
+  const n = parseFloat(s.replace(/[$,]/g, ''));
+  return n > 1 ? n / 100 : n;
+}
+function fmt(n)    { return '$' + n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+function fmtInt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+function pct(n)    { return (n * 100).toFixed(1) + '%'; }
+
+/* ════════════════════════════════════════════════════════════
+   LOAD DATA
+   ════════════════════════════════════════════════════════════ */
+function loadDaily() {
+  return new Promise((resolve, reject) => {
+    Papa.parse(DAILY_URL, {
+      download: true, header: false,
+      complete(results) {
+        allRows = results.data;
+        dailyData = [];
+        totalsRow = null;
+
+        for (let i = 1; i < allRows.length; i++) {
+          const r = allRows[i];
+          if (String(r[COL.DOW]).trim().toUpperCase() === 'TOTAL') { totalsRow = r; break; }
+          if (!r[COL.DATE]) continue;
+
+          const rev = parseMoney(r[COL.REV]), profit = parseMoney(r[COL.PROFIT]);
+          const adSpend = parseMoney(r[COL.ADSPEND]), cpa = parseMoney(r[COL.CPA]);
+          const roas = parseMoney(r[COL.ROAS]), margin = parseMargin(r[COL.MARGIN]);
+          const units = parseInt(r[COL.TOTAL_UNITS]) || 0;
+          const aov = parseMoney(r[COL.AOV]);
+
+          if (rev || adSpend || profit || units) {
+            dailyData.push({ dow: r[COL.DOW]||'', date: r[COL.DATE]||'', revenue: rev, profit, adSpend, cpa, roas, margin, units, aov });
+          }
+        }
+
+        if (!totalsRow && allRows.length > TOTALS_ROW_INDEX) totalsRow = allRows[TOTALS_ROW_INDEX];
+        resolve();
+      },
+      error: reject
+    });
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   FIND YESTERDAY — most recent row with date < today
+   ════════════════════════════════════════════════════════════ */
+function findYesterdayRow() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = dailyData.length - 1; i >= 0; i--) {
+    const parts = dailyData[i].date.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (!parts) continue;
+    let yr = parseInt(parts[3]); if (yr < 100) yr += 2000;
+    const rd = new Date(yr, parseInt(parts[1])-1, parseInt(parts[2])); rd.setHours(0,0,0,0);
+    if (rd < today) return dailyData[i];
+  }
+  return dailyData.length > 0 ? dailyData[dailyData.length - 1] : null;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RENDERERS
+   ════════════════════════════════════════════════════════════ */
+function renderYesterday() {
+  const y = findYesterdayRow();
+  if (!y) return;
+  document.getElementById('snapshot-date').textContent = `— ${y.date}`;
+  document.getElementById('y-revenue').textContent = fmtInt(y.revenue);
+  document.getElementById('y-profit').textContent  = fmtInt(y.profit);
+  document.getElementById('y-adspend').textContent = fmtInt(y.adSpend);
+  document.getElementById('y-cpa').textContent     = y.cpa > 0 ? fmt(y.cpa) : '--';
+  document.getElementById('y-backers').textContent = y.units || '--';
+  document.getElementById('y-aov').textContent     = y.aov > 0 ? fmt(y.aov) : '--';
+  document.getElementById('y-profit').className    = 'value ' + (y.profit >= 0 ? 'pos' : 'neg');
+}
+
+function renderCampaignTotals() {
+  if (!totalsRow) return;
+  const r = totalsRow;
+  document.getElementById('c-revenue').textContent = fmtInt(parseMoney(r[COL.REV]));
+  document.getElementById('c-profit').textContent  = fmtInt(parseMoney(r[COL.PROFIT]));
+  document.getElementById('c-adspend').textContent = fmtInt(parseMoney(r[COL.ADSPEND]));
+  document.getElementById('c-cpa').textContent     = parseMoney(r[COL.CPA]) > 0 ? fmt(parseMoney(r[COL.CPA])) : '--';
+  document.getElementById('c-backers').textContent = parseInt(r[COL.TOTAL_UNITS]) || '--';
+  document.getElementById('c-aov').textContent     = parseMoney(r[COL.AOV]) > 0 ? fmt(parseMoney(r[COL.AOV])) : '--';
+}
+
+function renderRevProfitChart() {
+  const labels = dailyData.map((d, i) => d.date || `Day ${i+1}`);
+  const revenues = dailyData.map(d => d.revenue);
+  const profits  = dailyData.map(d => d.profit);
+
+  if (revProfitChart) revProfitChart.destroy();
+
+  revProfitChart = new Chart(document.getElementById('revProfitChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Revenue', data: revenues, borderColor: BRAND.yellow, backgroundColor: 'rgba(255,215,0,0.10)', fill: true, tension: 0.35, pointRadius: 3, pointBackgroundColor: BRAND.yellow, borderWidth: 2 },
+        { label: 'Profit',  data: profits,  borderColor: BRAND.blue,   backgroundColor: 'rgba(61,90,128,0.10)', fill: true, tension: 0.35, pointRadius: 3, pointBackgroundColor: BRAND.blue,   borderWidth: 2 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: BRAND.muted, font: { size: 11 } } } },
       scales: {
         x: { ticks: { color: '#5A6A7A', font: { size: 10 } }, grid: { color: BRAND.navyBorder } },
         y: { ticks: { color: '#5A6A7A', callback: v => '$' + v.toLocaleString() }, grid: { color: BRAND.navyBorder } }
@@ -429,7 +450,7 @@ function renderFundingChart() {
         },
         {
           label: 'Funding Goal ($10,000)',
-          data: Arraylabels.length).fill(GOAL),
+          data: Array(labels.length).fill(GOAL),
           borderColor: 'rgba(46,204,113,0.5)',
           borderDash: [8, 4],
           borderWidth: 2,
